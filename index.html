@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Registration Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FAF7EF;
+    --rule-blue: #C7D4E8;
+    --margin-red: #D46A6A;
+    --ink: #2B2B33;
+    --ink-soft: #5B5B66;
+    --highlight: #FFD84D;
+    --accent: #2F5D8A;
+    --error: #C1443A;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    background: #E9E4D6;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+
+  .sheet {
+    width: 100%;
+    max-width: 620px;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        var(--paper),
+        var(--paper) 35px,
+        var(--rule-blue) 36px
+      );
+    background-position: 0 90px;
+    position: relative;
+    border-radius: 4px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.08);
+    padding: 44px 40px 48px 60px;
+    overflow: hidden;
+  }
+
+  .sheet::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 34px;
+    width: 2px;
+    background: var(--margin-red);
+    opacity: 0.55;
+  }
+
+  .eyebrow {
+    font-family: 'Caveat', cursive;
+    font-size: 1.15rem;
+    color: var(--accent);
+    margin: 0 0 2px;
+    font-weight: 700;
+  }
+
+  h1 {
+    font-family: 'Caveat', cursive;
+    font-size: 2.6rem;
+    line-height: 1;
+    margin: 0 0 22px;
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  label .req { color: var(--margin-red); }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="tel"],
+  textarea {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    padding: 9px 4px;
+    border: none;
+    border-bottom: 2px solid #C9C2AC;
+    background: transparent;
+    outline: none;
+    color: var(--ink);
+    transition: border-color 0.15s ease;
+  }
+
+  input:focus, textarea:focus {
+    border-bottom-color: var(--accent);
+  }
+
+  textarea { resize: vertical; min-height: 44px; font-family: 'Inter', sans-serif; }
+
+  .hobbies-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 2px;
+  }
+
+  .hobby-chip {
+    position: relative;
+  }
+
+  .hobby-chip input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .hobby-chip span {
+    display: inline-block;
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1.5px solid #C9C2AC;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    background: rgba(255,255,255,0.5);
+    transition: all 0.15s ease;
+  }
+
+  .hobby-chip input:checked + span {
+    background: var(--highlight);
+    border-color: #E0B93A;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  button {
+    margin-top: 8px;
+    align-self: flex-start;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    padding: 13px 30px;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #1E3F5C;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+
+  button:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #1E3F5C;
+  }
+
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .msg {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 10px 14px;
+    border-radius: 6px;
+    display: none;
+  }
+
+  .msg.success {
+    display: block;
+    background: #DFF3E3;
+    color: #256B3B;
+    border: 1px solid #B7E0C0;
+  }
+
+  .msg.error {
+    display: block;
+    background: #FBE4E1;
+    color: var(--error);
+    border: 1px solid #F1BDB6;
+  }
+
+  .error-text {
+    font-size: 0.78rem;
+    color: var(--error);
+    font-weight: 500;
+    min-height: 0;
+  }
+
+  @media (max-width: 480px) {
+    .sheet { padding: 36px 22px 40px 40px; }
+    .row2 { grid-template-columns: 1fr; }
+    h1 { font-size: 2.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <p class="eyebrow">Please fill this out</p>
+  <h1>Student Registration Form</h1>
+
+  <form id="studentForm" novalidate>
+    <div class="field">
+      <label for="name">Full Name <span class="req">*</span></label>
+      <input type="text" id="name" name="name" required autocomplete="name">
+      <div class="error-text" data-error-for="name"></div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label for="age">Age <span class="req">*</span></label>
+        <input type="number" id="age" name="age" min="1" max="120" required>
+        <div class="error-text" data-error-for="age"></div>
+      </div>
+      <div class="field">
+        <label for="phoneNumber">Phone Number <span class="req">*</span></label>
+        <input type="tel" id="phoneNumber" name="phoneNumber" required autocomplete="tel">
+        <div class="error-text" data-error-for="phoneNumber"></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="email">Email Address <span class="req">*</span></label>
+      <input type="email" id="email" name="email" required autocomplete="email">
+      <div class="error-text" data-error-for="email"></div>
+    </div>
+
+    <div class="field">
+      <label for="address">Address <span class="req">*</span></label>
+      <textarea id="address" name="address" rows="2" required></textarea>
+      <div class="error-text" data-error-for="address"></div>
+    </div>
+
+    <div class="field">
+      <label for="pinCode">Pin Code <span class="req">*</span></label>
+      <input type="text" id="pinCode" name="pinCode" required autocomplete="postal-code">
+      <div class="error-text" data-error-for="pinCode"></div>
+    </div>
+
+    <div class="field">
+      <label>Hobbies</label>
+      <div class="hobbies-grid">
+        <label class="hobby-chip"><input type="checkbox" name="hobbies" value="Reading"><span>Reading</span></label>
+        <label class="hobby-chip"><input type="checkbox" name="hobbies" value="Sports"><span>Sports</span></label>
+        <label class="hobby-chip"><input type="checkbox" name="hobbies" value="Music"><span>Music</span></label>
+        <label class="hobby-chip"><input type="checkbox" name="hobbies" value="Art"><span>Art</span></label>
+        <label class="hobby-chip"><input type="checkbox" name="hobbies" value="Gaming"><span>Gaming</span></label>
+        <label class="hobby-chip"><input type="checkbox" name="hobbies" value="Coding"><span>Coding</span></label>
+        <label class="hobby-chip"><input type="checkbox" name="hobbies" value="Dancing"><span>Dancing</span></label>
+        <label class="hobby-chip"><input type="checkbox" name="hobbies" value="Cooking"><span>Cooking</span></label>
+      </div>
+    </div>
+
+    <button type="submit" id="submitBtn">Submit</button>
+    <div class="msg" id="formMsg"></div>
+  </form>
+</div>
+
+<script>
+const form = document.getElementById('studentForm');
+const submitBtn = document.getElementById('submitBtn');
+const formMsg = document.getElementById('formMsg');
+
+function clearErrors() {
+  document.querySelectorAll('.error-text').forEach(el => el.textContent = '');
+  formMsg.className = 'msg';
+  formMsg.textContent = '';
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  clearErrors();
+
+  const data = {
+    name: form.name.value.trim(),
+    age: form.age.value.trim(),
+    address: form.address.value.trim(),
+    email: form.email.value.trim(),
+    pinCode: form.pinCode.value.trim(),
+    phoneNumber: form.phoneNumber.value.trim(),
+    hobbies: Array.from(form.querySelectorAll('input[name="hobbies"]:checked')).map(el => el.value)
+  };
+
+  // Client-side validation
+  let hasError = false;
+  const requiredFields = ['name', 'age', 'address', 'email', 'pinCode', 'phoneNumber'];
+  requiredFields.forEach(field => {
+    if (!data[field]) {
+      const el = document.querySelector(`[data-error-for="${field}"]`);
+      if (el) el.textContent = 'This field is required.';
+      hasError = true;
+    }
+  });
+  if (data.email && !/^\S+@\S+\.\S+$/.test(data.email)) {
+    document.querySelector('[data-error-for="email"]').textContent = 'Please enter a valid email address.';
+    hasError = true;
+  }
+  if (hasError) return;
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting...';
+
+  try {
+    const res = await fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const result = await res.json();
+
+    if (res.ok) {
+      formMsg.className = 'msg success';
+      formMsg.textContent = "Thanks! Your response has been recorded.";
+      form.reset();
+    } else {
+      formMsg.className = 'msg error';
+      formMsg.textContent = result.error || 'Something went wrong. Please try again.';
+    }
+  } catch (err) {
+    formMsg.className = 'msg error';
+    formMsg.textContent = 'Network error — please check your connection and try again.';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit';
+  }
+});
+</script>
+
+</body>
+</html>
