@@ -10,7 +10,7 @@ Fields collected: **Name, Age, Address, Email, Pin Code, Phone Number, Hobbies**
 You don't need to code anything — just follow the steps below.
 
 ---
-
+ 
 ## Part 1 — Create a free Railway account
 
 1. Go to https://railway.app
